@@ -1,5 +1,6 @@
 import json
 import os
+from datetime import datetime
 
 
 class TimeTracker:
@@ -93,7 +94,13 @@ class Activity:
 
 class Timer:
 
-    def __init__(self, _window_name):
-        self.window_name = _window_name
+    def __init__(self):
         self.time_spend = 0
-
+        self.start_tic = datetime.now()
+        self.end_tic = 0
+    
+    def update_time_spend(self):
+        self.end_tic = datetime.now()
+        dt_time_spend = self.end_tic - self.start_tic
+        self.time_spend = dt_time_spend.total_seconds()
+        self.start_tic = self.end_tic
