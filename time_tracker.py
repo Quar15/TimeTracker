@@ -1,8 +1,6 @@
 import json
-import sys, os
-import pygetwindow as gw
+import os
 
-print(gw.getActiveWindow().title)
 
 class TimeTracker:
 
@@ -10,20 +8,46 @@ class TimeTracker:
         self.activities = []
 
     def initialize_me(self):
-        if(os.path.isfile("./TimeTrackerData.json")):
-            with open("./TimeTrackerData.json", "r"):
+        if os.path.isfile("./TimeTrackerData.json"):
+            with open("./TimeTrackerData.json", "r") as f:
                 data = json.load(f)
-                self.activities.append(self.get_activities_from_json(data))
+                self.activities = self.get_activities_from_json(data)
+        else:
+            print("Welcome to Time Tracker!")
 
     def get_activities_from_json(self, data):
         activity_list = []
         for activity in data['activities']:
             activity_list.append(
-                Activity(activity["name"], self.get_categories_from_json(activity), activity['total_time_spend'])
+                Activity(activity['name'], activity['categories'], activity['total_time_spend'])
             )
-
         return activity_list
 
+    def add_activity(self, new_activity):
+        self.activities.append(new_activity)
+
+    def search_for_activity(self, searched_activity_window_name, time_spend):
+        for activity in self.activities:
+            if activity.name == searched_activity_window_name:
+                activity.total_time_spend += time_spend
+                return activity
+        
+        return None
+
+    def serialize(self):
+        return {
+            "activities": self.serialize_activities_to_json()
+        }
+
+    def serialize_activities_to_json(self):
+        activities_list = []
+        for activity in self.activities:
+            activities_list.append(activity.serialize())
+        return activities_list
+
+    def save_me(self):
+        with open("./TimeTrackerData.json", "w") as f:
+            json.dump(self.serialize(), f, indent=4, sort_keys=True)
 
 
 class ActivityCategory:
@@ -43,6 +67,7 @@ class ActivityCategory:
             "value": self.value
         }
 
+
 class Activity:
     
     def __init__(self, _name, _categories, _total_time_spend=0):
@@ -53,7 +78,7 @@ class Activity:
     def serialize(self):
         return {
             "name": self.name,
-            "categories": self.serialize_categories_to_json()
+            "categories": self.serialize_categories_to_json(),
             "total_time_spend" : self.total_time_spend
         }
 
@@ -67,6 +92,7 @@ class Activity:
         self.categories.push(_new_category)
 
 class Timer:
+
     def __init__(self, _window_name):
         self.window_name = _window_name
         self.time_spend = 0
