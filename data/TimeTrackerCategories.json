@@ -1,0 +1,22 @@
+{
+    "categories": [
+        {
+            "id": 0,
+            "name": "Web",
+            "total_time_spend": 0,
+            "wage": 1
+        },
+        {
+            "id": 1,
+            "name": "Web",
+            "total_time_spend": 0,
+            "wage": 1
+        },
+        {
+            "id": 2,
+            "name": "Coding",
+            "total_time_spend": 0,
+            "wage": 2
+        }
+    ]
+}
