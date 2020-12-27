@@ -32,7 +32,7 @@ class TimeTracker:
     def get_categories_from_json(self, data):
         category_list = []
         for category in data['categories']:
-            category_list.append(ActivityCategory(category['id'], category['name'], category['wage'], category['total_time_spend']))
+            category_list.append(ActivityCategory(category['id'], category['name'], category['wage'], category['total_time_spend'], category['keywords']))
         return category_list
 
     def add_activity(self, new_activity):
@@ -67,6 +67,27 @@ class TimeTracker:
                 return category
         return None
 
+    def update_category(self, id, name=None, wage=None, keywords=[], time_spend=None):
+        
+        changed_category = self.search_category_by_id(id)
+
+        if changed_category != None:
+            if name != None:
+                changed_category.name = name
+            if wage != None:
+                changed_category.wage = wage
+            if keywords != []:
+                changed_category.keywords = keywords
+            if time_spend != None:
+                changed_category.total_time_spend = time_spend
+
+            self.categories[changed_category.id] = changed_category 
+            print("Category ID =", changed_category.id, "updated!")
+
+    def update_category_force(self, category):
+        self.categories[category.id] = category
+        print("Force ActivityCategory ID =", category.id, "update completed!")
+
     def serialize_list_to_json(self, list_to_serialize):
         object_list = []
         for obj in list_to_serialize:
@@ -96,9 +117,16 @@ class ActivityCategory:
             "id": self.id,
             "name": self.name,
             "wage": self.wage,
-            "total_time_spend": self.total_time_spend
+            "total_time_spend": self.total_time_spend,
+            "keywords": self.keywords
         }
 
+    def add_keywords(self, new_keywords):
+        print(self.keywords)
+        for new_keyword in new_keywords:
+            if new_keyword not in self.keywords:
+                self.keywords.append(new_keyword)
+                print("New keyword added to", self.name)
 
 class Activity:
     

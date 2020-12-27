@@ -6,7 +6,11 @@ import time
 def get_active_window():
     _active_window_name = None
     if sys.platform in ['Windows', 'win32', 'cygwin']:
-        _active_window_name = gw.getActiveWindow().title
+        try:
+            _active_window_name = gw.getActiveWindow().title
+        except AttributeError:
+            print("WARNING: No active window found")
+            _active_window_name = ""
     
     else:
         print("sys.platform={platform} is not supported.".format(platform=sys.platform))
@@ -39,10 +43,18 @@ def update_activity_categories(activity):
 
 def create_category(name, wage, keywords):
     new_category = ActivityCategory(len(time_tracker.categories), name, wage, 0, keywords)
-    if time_tracker.search_category_by_name(new_category.name) == None: # @TODO: Create categories comparator
+    if time_tracker.search_category_by_name(new_category.name) == None:
         time_tracker.add_category(new_category)
         time_tracker.update_all_activities_categories()
 
+
+def add_keywords_to_category(category_id, new_keywords):
+    changed_category = time_tracker.search_category_by_id(category_id)
+    if changed_category != None:
+        changed_category.add_keywords(new_keywords)
+        time_tracker.update_category_force(changed_category)
+    else:
+        print("WARNING: Category NOT found!")
 
 active_window_name = get_active_window()
 activity_name = ""
@@ -56,8 +68,7 @@ except json.decoder.JSONDecodeError:
     print("\nFailed to load data from ./TimeTrackerData.json")
 
 
-create_category("Web", 1, ["Mozilla Firefox", "Google Chrome"])
-create_category("Coding", 2, ["Visual Studio", "Stack Overflow"])
+time_tracker.update_all_activities_categories()
 
 try:
     while True:
@@ -78,7 +89,6 @@ try:
         time.sleep(1)
 
 except KeyboardInterrupt:
-    print(opened_activities_names)
     set_time_spend(active_window_name, update_timer())
     time_tracker.save_me()
     print("\nData saved! Have a nice day!")
