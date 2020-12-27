@@ -1,2 +1,4 @@
 __pycache__/time_tracker.cpython-38.pyc
 TimeTrackerData.json
+client/__pycache__/time_tracker.cpython-38.pyc
+server/__pycache__/time_tracker.cpython-38.pyc
