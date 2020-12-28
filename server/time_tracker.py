@@ -48,6 +48,15 @@ class TimeTracker:
                     if keyword in activity.name:
                         activity.add_category(category.id)
 
+    def update_all_categories_time_spend(self):
+        for category in self.categories:
+            new_total_time_spend = 0
+            for activity in self.activities:
+                if category.id in activity.categories_id:
+                    new_total_time_spend += activity.total_time_spend
+
+            category.total_time_spend = new_total_time_spend
+
     def search_for_activity(self, searched_activity_window_name, time_spend):
         for activity in self.activities:
             if activity.name == searched_activity_window_name:
