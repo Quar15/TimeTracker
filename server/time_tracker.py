@@ -138,7 +138,7 @@ class TimeTracker:
             json.dump(serialized_data, f, indent=4, sort_keys=True)
 
     def save_me(self):
-        self.save_to_json("./data/TimeTrackerData.json", {"activities": self.serialize_list_to_json(self.activities)})
+        self.save_to_json(self.file_name, {"activities": self.serialize_list_to_json(self.activities)})
         self.save_to_json("./data/TimeTrackerCategories.json", {"categories": self.serialize_list_to_json(self.categories)})
 
 
