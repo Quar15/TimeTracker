@@ -1,17 +1,27 @@
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 class TimeTracker:
 
-    def __init__(self):
+    def __init__(self, days_to_subtract):
         self.activities = []
         self.categories = []
+        self.date = (datetime.today() - timedelta(days=days_to_subtract)).strftime("%d%m%Y")
+        self.file_name = "./data/TimeTrackerData" + self.date + ".json"
+
+    def __str__(self):
+        str_representation = "TimeTracker object " + self.date
+        return str_representation
+
+    def __repr__(self):
+        str_representation = "TimeTracker object " + self.date
+        return str_representation
 
     def initialize_me(self):
-        if os.path.isfile("./data/TimeTrackerData.json") and os.path.isfile("./data/TimeTrackerCategories.json"):
-            with open("./data/TimeTrackerData.json", "r") as f:
+        if os.path.isfile(self.file_name) and os.path.isfile("./data/TimeTrackerCategories.json"):
+            with open(self.file_name, "r") as f:
                 data = json.load(f)
                 self.activities = self.get_activities_from_json(data)
 
@@ -19,7 +29,7 @@ class TimeTracker:
                 data = json.load(f)
                 self.categories = self.get_categories_from_json(data)
         else:
-            print("Welcome to Time Tracker!")
+            raise IOError("WARNING: File " + self.file_name + " not found!")
 
     def get_activities_from_json(self, data):
         activity_list = []
@@ -40,6 +50,26 @@ class TimeTracker:
 
     def add_category(self, new_category):
         self.categories.append(new_category)
+
+    def create_category(self, name, wage, keywords):
+        new_category = ActivityCategory(len(self.categories), name, wage, 0, keywords)
+        if self.search_category_by_name(new_category.name) == None:
+            self.add_category(new_category)
+            self.update_all_activities_categories()
+
+    def add_keywords_to_category(self, category_id, new_keywords):
+        changed_category = self.search_category_by_id(category_id)
+        if changed_category != None:
+            changed_category.add_keywords(new_keywords)
+            self.update_category_force(changed_category)
+        else:
+            print("WARNING: Category NOT found!")
+
+    def update_activity_categories(self, activity):
+        for category in self.categories:
+            for keyword in category.keywords:
+                if keyword in activity.name and category.id not in activity.categories_id:
+                    activity.add_category(category.id)
 
     def update_all_activities_categories(self):
         for activity in self.activities:

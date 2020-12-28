@@ -7,10 +7,11 @@ class TimeTracker:
 
     def __init__(self):
         self.activities = []
+        self.file_name = "./data/TimeTrackerData" + datetime.today().strftime("%d%m%Y") + ".json"
 
     def initialize_me(self):
-        if os.path.isfile("./data/TimeTrackerData.json"):
-            with open("./data/TimeTrackerData.json", "r") as f:
+        if os.path.isfile(self.file_name):
+            with open(self.file_name, "r") as f:
                 data = json.load(f)
                 self.activities = self.get_activities_from_json(data)
         else:
@@ -46,7 +47,7 @@ class TimeTracker:
             json.dump(serialized_data, f, indent=4, sort_keys=True)
 
     def save_me(self):
-        self.save_to_json("./data/TimeTrackerData.json", {"activities": self.serialize_list_to_json(self.activities)})
+        self.save_to_json(self.file_name, {"activities": self.serialize_list_to_json(self.activities)})
 
 
 class Activity:
@@ -58,6 +59,7 @@ class Activity:
     def serialize(self):
         return {
             "name": self.name,
+            "categories_id": [],
             "total_time_spend" : self.total_time_spend
         }
 
