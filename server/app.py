@@ -43,8 +43,18 @@ def get_time_tracker_by_date(searched_date):
     return None
 
 
+def create_graphs_for_time_trackers():
+    for time_tracker in time_trackers:
+        time_tracker.create_graph()
+
+def create_legend():
+    time_trackers[0].create_graph(create_legend_png=True)
+
+
 time_trackers = initialize_time_trackers()
 update_data()
+create_graphs_for_time_trackers()
+create_legend()
 
 
 @app.route('/')

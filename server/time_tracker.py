@@ -1,6 +1,8 @@
 import json
 import os
 from datetime import datetime, timedelta
+import numpy as np
+import matplotlib.pyplot as plt
 
 
 class TimeTracker:
@@ -50,6 +52,42 @@ class TimeTracker:
 
     def add_category(self, new_category):
         self.categories.append(new_category)
+
+    def create_graph(self, create_legend_png=False):
+        graph_file_name = "./data/png/TimeTrackerData" + self.date + ".png"
+        fig, ax = plt.subplots(figsize=(6, 3), subplot_kw=dict(aspect="equal"))
+
+        category_time = []
+        category_names = []
+        for category in self.categories:
+            category_names.append(category.name)
+            category_time.append(category.total_time_spend)
+
+        def get_labels(allvals):
+            labels = []
+            for val in allvals:
+                percent_val = float(val/np.sum(allvals)*100.)
+                labels.append("{:.1f}%".format(percent_val))
+            return labels
+
+
+        wedges, texts, autotexts = ax.pie(category_time, autopct="", textprops=dict(color="w"), labels=get_labels(category_time))
+
+
+        my_legend = ax.legend(wedges, category_names,
+                title="Categories",
+                loc="center left",
+                bbox_to_anchor=(1, 0, 0.5, 1))
+
+        if create_legend_png:
+            legend_fig = my_legend.figure
+            legend_fig.canvas.draw()
+            bbox = my_legend.get_window_extent().transformed(legend_fig.dpi_scale_trans.inverted())
+            legend_fig.savefig("./data/png/categories-legend.png", dpi="figure", bbox_inches=bbox, transparent=True)
+
+        plt.setp(autotexts, size=8, weight="bold")
+
+        plt.savefig(graph_file_name, bbox_inches='tight', transparent=True)
 
     def create_category(self, name, wage, keywords):
         new_category = ActivityCategory(len(self.categories), name, wage, 0, keywords)
