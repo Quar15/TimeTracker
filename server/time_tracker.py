@@ -95,7 +95,9 @@ class TimeTracker:
         return None
 
     def search_category_by_id(self, searched_category_id):
+        print(searched_category_id)
         for category in self.categories:
+            print(category.id)
             if category.id == searched_category_id:
                 return category
         return None

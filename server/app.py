@@ -56,6 +56,16 @@ def index():
 def get_categories():
     return {"categories": time_trackers[0].serialize_list_to_json(time_trackers[0].categories)}
 
+
+@app.route("/get-category-by-id/<searched_category_id>")
+def get_category_by_id(searched_category_id):
+    output = []
+    searched_category = time_trackers[0].search_category_by_id(int(searched_category_id))
+    if searched_category != None:
+        output = searched_category.serialize()
+    return {"category": output}
+
+
 @app.route('/get-time-trackers')
 def get_data():
     output = []

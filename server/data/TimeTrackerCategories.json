@@ -7,7 +7,7 @@
                 "Google Chrome"
             ],
             "name": "Web",
-            "total_time_spend": 13.005037999999999,
+            "total_time_spend": 0,
             "wage": 0
         },
         {
@@ -32,7 +32,7 @@
                 "XAMPP"
             ],
             "name": "Coding",
-            "total_time_spend": 17.958114000000002,
+            "total_time_spend": 0,
             "wage": 2
         },
         {
@@ -44,7 +44,7 @@
                 "Netflix"
             ],
             "name": "Entertainment",
-            "total_time_spend": 1.000976,
+            "total_time_spend": 0,
             "wage": -1
         },
         {
@@ -67,7 +67,7 @@
                 "TeamSpeak"
             ],
             "name": "Communication",
-            "total_time_spend": 36.016638,
+            "total_time_spend": 0,
             "wage": 0
         }
     ]
