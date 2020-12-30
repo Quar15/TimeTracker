@@ -1,7 +1,7 @@
 from time_tracker import *
 import sys
 
-from flask import Flask
+from flask import Flask, render_template
 app = Flask(__name__)
 
 DAYS_TO_LOAD = 7
@@ -57,10 +57,9 @@ if len(time_trackers):
     create_graphs_for_time_trackers()
     create_legend()
 
-
 @app.route('/')
 def index():
-    return ''
+    return render_template("index.html", time_trackers=time_trackers)
 
 
 @app.route("/get-categories")
