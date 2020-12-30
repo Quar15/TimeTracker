@@ -74,19 +74,18 @@ class TimeTracker:
         wedges, texts, autotexts = ax.pie(category_time, autopct="", textprops=dict(color="w"), labels=get_labels(category_time))
 
 
-        my_legend = ax.legend(wedges, category_names,
-                title="Categories",
-                loc="center left",
-                bbox_to_anchor=(1, 0, 0.5, 1))
-
         if create_legend_png:
+            my_legend = ax.legend(wedges, category_names,
+                    title="Categories",
+                    loc="center left",
+                    bbox_to_anchor=(1, 0, 0.5, 1))
             legend_fig = my_legend.figure
             legend_fig.canvas.draw()
             bbox = my_legend.get_window_extent().transformed(legend_fig.dpi_scale_trans.inverted())
             legend_fig.savefig("./data/png/categories-legend.png", dpi="figure", bbox_inches=bbox, transparent=True)
+            my_legend.remove()
 
         plt.setp(autotexts, size=8, weight="bold")
-
         plt.savefig(graph_file_name, bbox_inches='tight', transparent=True)
 
     def create_category(self, name, wage, keywords):

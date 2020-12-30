@@ -53,8 +53,9 @@ def create_legend():
 
 time_trackers = initialize_time_trackers()
 update_data()
-create_graphs_for_time_trackers()
-create_legend()
+if len(time_trackers):
+    create_graphs_for_time_trackers()
+    create_legend()
 
 
 @app.route('/')
