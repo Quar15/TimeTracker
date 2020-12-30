@@ -1,6 +1,8 @@
 *{
     margin: 0;
     padding: 0;
+    text-decoration: none;
+    list-style: none;
 }
 
 @font-face {
@@ -9,9 +11,9 @@
 }
 
 body{
-    height: 100vh;
+    height: 90vh;
     width: 100vw;
-    overflow: hidden;
+    overflow-x: hidden;
     background-color: #2C3C4D;
     color: #eee;
     font-family: Montserrat, sans-serif;
@@ -38,4 +40,12 @@ body{
 .wrapper .graphs{
     margin: 50px 0px;
     display: flex;
+}
+
+.wrapper .activity-list{
+    text-align: left;
+}
+
+.wrapper .time-tracker-activities{
+    margin: 20px 0px;
 }

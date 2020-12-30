@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Activities | Time Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/style.css') }}">
+</head>
+<body>
+    <div class="wrapper">
+        
+        {% for time_tracker in time_trackers %}
+            <div class="time-tracker-activities">
+                <h2>{{ time_tracker.get_readable_date() }}</h2>
+                <ul class="activity-list">
+                    {% for activity in time_tracker.activities %}
+                        <li>{{ activity.get_readable_time() }} - {{ activity.name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

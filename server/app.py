@@ -62,10 +62,18 @@ def index():
     graph_files = []
     graph_dates = []
     for time_tracker in time_trackers:
-        graph_dates.append(time_tracker.date[0:2]+"."+time_tracker.date[2:4]+"."+time_tracker.date[4:])
+        graph_dates.append(time_tracker.get_readable_date())
         graph_files.append("/png/TimeTrackerData" + time_tracker.date + ".png")
     return render_template("index.html", graph_data=zip(graph_files, graph_dates))
 
+
+@app.route('/create-category')
+def create_category_html():
+    return render_template("create-category.html")
+
+@app.route('/browse-all')
+def browse_all():
+    return render_template("browse-all.html", time_trackers=time_trackers)
 
 @app.route("/get-categories")
 def get_categories():

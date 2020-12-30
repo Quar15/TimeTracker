@@ -47,6 +47,9 @@ class TimeTracker:
             category_list.append(ActivityCategory(category['id'], category['name'], category['wage'], category['total_time_spend'], category['keywords']))
         return category_list
 
+    def get_readable_date(self):
+        return (self.date[0:2]+"."+self.date[2:4]+"."+self.date[4:])
+
     def add_activity(self, new_activity):
         self.activities.append(new_activity)
 
@@ -217,8 +220,12 @@ class Activity:
         return {
             "name": self.name,
             "categories_id": self.categories_id,
-            "total_time_spend" : self.total_time_spend
+            "total_time_spend" : int(self.total_time_spend)
         }
+
+    def get_readable_time(self):
+        readable_time = str(timedelta(seconds=self.total_time_spend))
+        return(readable_time)
 
     def add_category(self, new_category_id):
         if new_category_id not in self.categories_id:
