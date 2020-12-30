@@ -54,7 +54,7 @@ class TimeTracker:
         self.categories.append(new_category)
 
     def create_graph(self, create_legend_png=False):
-        graph_file_name = "./data/png/TimeTrackerData" + self.date + ".png"
+        graph_file_name = "./static/png/TimeTrackerData" + self.date + ".png"
         fig, ax = plt.subplots(figsize=(6, 3), subplot_kw=dict(aspect="equal"))
 
         category_time = []
@@ -82,7 +82,7 @@ class TimeTracker:
             legend_fig = my_legend.figure
             legend_fig.canvas.draw()
             bbox = my_legend.get_window_extent().transformed(legend_fig.dpi_scale_trans.inverted())
-            legend_fig.savefig("./data/png/categories-legend.png", dpi="figure", bbox_inches=bbox, transparent=True)
+            legend_fig.savefig("./static/png/categories-legend.png", dpi="figure", bbox_inches=bbox, transparent=True)
             my_legend.remove()
 
         plt.setp(autotexts, size=8, weight="bold")

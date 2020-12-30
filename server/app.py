@@ -59,7 +59,12 @@ if len(time_trackers):
 
 @app.route('/')
 def index():
-    return render_template("index.html", time_trackers=time_trackers)
+    graph_files = []
+    graph_dates = []
+    for time_tracker in time_trackers:
+        graph_dates.append(time_tracker.date[0:2]+"."+time_tracker.date[2:4]+"."+time_tracker.date[4:])
+        graph_files.append("/png/TimeTrackerData" + time_tracker.date + ".png")
+    return render_template("index.html", graph_data=zip(graph_files, graph_dates))
 
 
 @app.route("/get-categories")

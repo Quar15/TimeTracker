@@ -1,7 +1,6 @@
 *{
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
 @font-face {
@@ -25,7 +24,18 @@ body{
 }
 
 .wrapper{
+    position: absolute;
+    width: 900px;
     top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-flow: column;
+}
+
+.wrapper .graphs{
+    margin: 50px 0px;
+    display: flex;
 }

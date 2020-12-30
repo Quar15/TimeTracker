@@ -9,7 +9,15 @@
 <body>
     <h2 class="title-text">Time Tracker</h2>
     <div class="wrapper">
-        
+        <div class="graphs">
+            {% for graph_file, graph_date in graph_data %}
+            <div>
+                <img src="{{ url_for('static',filename=graph_file) }}"  class="time-percentage-img">
+                <h2>{{ graph_date }}</h2>
+            </div>
+            {% endfor %}
+        </div>
+        <img src="{{ url_for('static',filename='png/categories-legend.png') }}"  class="time-percentage-img">
     </div>
 </body>
 </html>
