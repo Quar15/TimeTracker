@@ -60,7 +60,7 @@ class Activity:
         return {
             "name": self.name,
             "categories_id": [],
-            "total_time_spend" : self.total_time_spend
+            "total_time_spend" : int(self.total_time_spend)
         }
 
 
