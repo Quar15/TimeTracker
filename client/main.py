@@ -44,6 +44,7 @@ def send_data():
         url = "http://" + SERVER_IP + ":" + SERVER_PORT + "/send-data"
         with open(time_tracker.file_name, "r") as f:
                 data = json.load(f)
+        data.update({"date": time_tracker.date})
         response = requests.post(url, json=data)
         
         if response.status_code == 200:

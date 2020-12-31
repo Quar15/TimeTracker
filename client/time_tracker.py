@@ -7,7 +7,8 @@ class TimeTracker:
 
     def __init__(self):
         self.activities = []
-        self.file_name = "./data/TimeTrackerData" + datetime.today().strftime("%d%m%Y") + ".json"
+        self.date = datetime.today().strftime("%d%m%Y")
+        self.file_name = "./data/TimeTrackerData" + self.date + ".json"
 
     def initialize_me(self):
         if os.path.isfile(self.file_name):
