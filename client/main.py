@@ -2,6 +2,11 @@ import pygetwindow as gw
 from time_tracker import *
 import sys
 import time
+import requests
+
+SERVER_IP = "127.0.0.1"
+SERVER_PORT = "5000"
+
 
 def get_active_window():
     _active_window_name = None
@@ -34,6 +39,19 @@ def update_timer():
     return curr_activity_timer.time_spend
 
 
+def send_data():
+    try:
+        url = "http://" + SERVER_IP + ":" + SERVER_PORT + "/send-data"
+        with open(time_tracker.file_name, "r") as f:
+                data = json.load(f)
+        response = requests.post(url, json=data)
+        
+        if response.status_code == 200:
+            print("INFO: Data saved on server")
+    except:
+        print("ERROR: Sending data to server failed")
+
+
 active_window_name = get_active_window()
 activity_name = ""
 time_tracker = TimeTracker()
@@ -63,4 +81,5 @@ try:
 except KeyboardInterrupt:
     set_time_spend(active_window_name, update_timer())
     time_tracker.save_me()
+    send_data()
     print("\nData saved! Have a nice day!")

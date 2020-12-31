@@ -1,7 +1,7 @@
 from time_tracker import *
 import sys
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 app = Flask(__name__)
 
 DAYS_TO_LOAD = 7
@@ -71,9 +71,22 @@ def index():
 def create_category_html():
     return render_template("create-category.html")
 
+
 @app.route('/browse-all')
 def browse_all():
     return render_template("browse-all.html", time_trackers=time_trackers)
+
+
+@app.route("/send-data", methods=['POST'])
+def add_new_data():
+    try:
+        new_time_tracker_data = request.get_json()
+        print(new_time_tracker_data)
+        return ""
+    except:
+        print("ERROR: File error")
+        return "Error with files"
+
 
 @app.route("/get-categories")
 def get_categories():
