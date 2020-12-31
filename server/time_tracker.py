@@ -5,12 +5,20 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+def serialize_list_to_json(list_to_serialize):
+    object_list = []
+    for obj in list_to_serialize:
+        object_list.append(obj.serialize())
+    return object_list
+
 class TimeTracker:
 
-    def __init__(self, days_to_subtract):
+    def __init__(self, days_to_subtract=0, date=None):
         self.activities = []
-        self.categories = []
-        self.date = (datetime.today() - timedelta(days=days_to_subtract)).strftime("%d%m%Y")
+        if date == None:
+            self.date = (datetime.today() - timedelta(days=days_to_subtract)).strftime("%d%m%Y")
+        else:
+            self.date = date
         self.file_name = "./data/TimeTrackerData" + self.date + ".json"
 
     def __str__(self):
@@ -26,10 +34,6 @@ class TimeTracker:
             with open(self.file_name, "r") as f:
                 data = json.load(f)
                 self.activities = self.get_activities_from_json(data)
-
-            with open("./data/TimeTrackerCategories.json", "r") as f:
-                data = json.load(f)
-                self.categories = self.get_categories_from_json(data)
         else:
             raise IOError("WARNING: File " + self.file_name + " not found!")
 
@@ -41,28 +45,24 @@ class TimeTracker:
             )
         return activity_list
 
-    def get_categories_from_json(self, data):
-        category_list = []
-        for category in data['categories']:
-            category_list.append(ActivityCategory(category['id'], category['name'], category['wage'], category['total_time_spend'], category['keywords']))
-        return category_list
-
     def get_readable_date(self):
         return (self.date[0:2]+"."+self.date[2:4]+"."+self.date[4:])
 
     def add_activity(self, new_activity):
         self.activities.append(new_activity)
 
-    def add_category(self, new_category):
-        self.categories.append(new_category)
-
     def create_graph(self, create_legend_png=False):
         graph_file_name = "./static/png/TimeTrackerData" + self.date + ".png"
         fig, ax = plt.subplots(figsize=(6, 3), subplot_kw=dict(aspect="equal"))
 
+        temp_categories = TimeTrackerCategories()
+        temp_categories.initialize_me()
+        temp_categories.update_all_categories_time_spend(self.activities)
+        categories = temp_categories.categories
+
         category_time = []
         category_names = []
-        for category in self.categories:
+        for category in categories:
             category_names.append(category.name)
             category_time.append(category.total_time_spend)
 
@@ -91,6 +91,62 @@ class TimeTracker:
         plt.setp(autotexts, size=8, weight="bold")
         plt.savefig(graph_file_name, bbox_inches='tight', transparent=True)
 
+    def update_activity_categories(self, activity):
+        for category in self.categories:
+            for keyword in category.keywords:
+                if keyword in activity.name and category.id not in activity.categories_id:
+                    activity.add_category(category.id)
+
+    def update_all_activities_categories(self, categories):
+        for activity in self.activities:
+            for category in categories:
+                for keyword in category.keywords:
+                    if keyword in activity.name:
+                        activity.add_category(category.id)
+
+    def search_for_activity(self, searched_activity_window_name, time_spend):
+        for activity in self.activities:
+            if activity.name == searched_activity_window_name:
+                activity.total_time_spend += time_spend
+                return activity
+        return None
+
+    def save_to_json(self, path, serialized_data):
+        with open(path, "w") as f:
+            json.dump(serialized_data, f, indent=4, sort_keys=True)
+
+    def save_me(self):
+        self.save_to_json(self.file_name, {"activities": serialize_list_to_json(self.activities)})
+
+
+class TimeTrackerCategories:
+
+    def __init__(self):
+        self.categories = []
+
+    def initialize_me(self):
+        with open("./data/TimeTrackerCategories.json", "r") as f:
+            data = json.load(f)
+        self.categories = self.get_categories_from_json(data)
+
+    def get_categories_from_json(self, data):
+        category_list = []
+        for category in data['categories']:
+            category_list.append(ActivityCategory(category['id'], category['name'], category['wage'], category['total_time_spend'], category['keywords']))
+        return category_list
+
+    def search_category_by_id(self, searched_category_id):
+        for category in self.categories:
+            if category.id == searched_category_id:
+                return category
+        return None
+
+    def search_category_by_name(self, searched_category_name):
+        for category in self.categories:
+            if category.name == searched_category_name:
+                return category
+        return None
+
     def create_category(self, name, wage, keywords):
         new_category = ActivityCategory(len(self.categories), name, wage, 0, keywords)
         if self.search_category_by_name(new_category.name) == None:
@@ -105,48 +161,28 @@ class TimeTracker:
         else:
             print("WARNING: Category NOT found!")
 
-    def update_activity_categories(self, activity):
-        for category in self.categories:
-            for keyword in category.keywords:
-                if keyword in activity.name and category.id not in activity.categories_id:
-                    activity.add_category(category.id)
+    def add_category(self, new_category):
+        self.categories.append(new_category)
 
-    def update_all_activities_categories(self):
-        for activity in self.activities:
-            for category in self.categories:
-                for keyword in category.keywords:
-                    if keyword in activity.name:
-                        activity.add_category(category.id)
-
-    def update_all_categories_time_spend(self):
+    def update_all_categories_time_spend(self, activities):
         for category in self.categories:
             new_total_time_spend = 0
-            for activity in self.activities:
+            for activity in activities:
                 if category.id in activity.categories_id:
                     new_total_time_spend += activity.total_time_spend
 
             category.total_time_spend = new_total_time_spend
 
-    def search_for_activity(self, searched_activity_window_name, time_spend):
-        for activity in self.activities:
-            if activity.name == searched_activity_window_name:
-                activity.total_time_spend += time_spend
-                return activity
-        return None
+    def update_all_categories_time_spend_force(self, new_times_spend):
+        try:
+            for category, new_time_spend in zip(self.categories, new_times_spend):
+                category.total_time_spend = new_time_spend
+        except:
+            print("ERROR: new_times_spend length is not equal length of TimeTrackerCategories.categories")
 
-    def search_category_by_id(self, searched_category_id):
-        print(searched_category_id)
-        for category in self.categories:
-            print(category.id)
-            if category.id == searched_category_id:
-                return category
-        return None
-
-    def search_category_by_name(self, searched_category_name):
-        for category in self.categories:
-            if category.name == searched_category_name:
-                return category
-        return None
+    def update_category_force(self, category):
+        self.categories[category.id] = category
+        print("Force ActivityCategory ID =", category.id, "update completed!")
 
     def update_category(self, id, name=None, wage=None, keywords=[], time_spend=None):
         
@@ -165,24 +201,8 @@ class TimeTracker:
             self.categories[changed_category.id] = changed_category 
             print("Category ID =", changed_category.id, "updated!")
 
-    def update_category_force(self, category):
-        self.categories[category.id] = category
-        print("Force ActivityCategory ID =", category.id, "update completed!")
-
-    def serialize_list_to_json(self, list_to_serialize):
-        object_list = []
-        for obj in list_to_serialize:
-            object_list.append(obj.serialize())
-        return object_list
-
-    def save_to_json(self, path, serialized_data):
-        with open(path, "w") as f:
-            json.dump(serialized_data, f, indent=4, sort_keys=True)
-
-    def save_me(self):
-        self.save_to_json(self.file_name, {"activities": self.serialize_list_to_json(self.activities)})
-        self.save_to_json("./data/TimeTrackerCategories.json", {"categories": self.serialize_list_to_json(self.categories)})
-
+    def serialize(self):
+        return ({"activities": serialize_list_to_json(self.categories)})
 
 class ActivityCategory:
 

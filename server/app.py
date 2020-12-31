@@ -19,10 +19,16 @@ def initialize_time_trackers():
     return time_trackers
 
 
+def initialize_categories():
+    ttCategories = TimeTrackerCategories()
+    ttCategories.initialize_me()
+    return ttCategories
+
+
 def update_categories_in_time_trackers():
     for time_tracker in time_trackers:
-        time_tracker.update_all_activities_categories()
-        time_tracker.update_all_categories_time_spend()
+        time_tracker.update_all_activities_categories(time_tracker_categories_obj.categories)
+        time_tracker_categories_obj.update_all_categories_time_spend(time_tracker.activities)
 
 
 def save_data():
@@ -47,15 +53,18 @@ def create_graphs_for_time_trackers():
     for time_tracker in time_trackers:
         time_tracker.create_graph()
 
+
 def create_legend():
     time_trackers[0].create_graph(create_legend_png=True)
 
 
+time_tracker_categories_obj = initialize_categories()
 time_trackers = initialize_time_trackers()
 update_data()
 if len(time_trackers):
     create_graphs_for_time_trackers()
     create_legend()
+    pass
 
 @app.route('/')
 def index():
@@ -81,7 +90,10 @@ def browse_all():
 def add_new_data():
     try:
         new_time_tracker_data = request.get_json()
-        print(new_time_tracker_data)
+        new_time_tracker = TimeTracker(date=new_time_tracker_data['date'])
+        new_time_tracker.activities = new_time_tracker.get_activities_from_json(new_time_tracker_data)
+        time_trackers.append(new_time_tracker)
+        update_data()
         return ""
     except:
         print("ERROR: File error")
@@ -90,13 +102,13 @@ def add_new_data():
 
 @app.route("/get-categories")
 def get_categories():
-    return {"categories": time_trackers[0].serialize_list_to_json(time_trackers[0].categories)}
+    return {"categories": time_tracker_categories_obj.serialize()}
 
 
 @app.route("/get-category-by-id/<searched_category_id>")
 def get_category_by_id(searched_category_id):
     output = []
-    searched_category = time_trackers[0].search_category_by_id(int(searched_category_id))
+    searched_category = time_tracker_categories_obj.search_category_by_id(int(searched_category_id))
     if searched_category != None:
         output = searched_category.serialize()
     return {"category": output}
@@ -106,7 +118,7 @@ def get_category_by_id(searched_category_id):
 def get_data():
     output = []
     for time_tracker in time_trackers:
-        output.append({time_tracker.date : {"activities": time_tracker.serialize_list_to_json(time_tracker.activities)}})
+        output.append({time_tracker.date : {"activities": serialize_list_to_json(time_tracker.activities)}})
 
     return {"time_trackers": output}
 
@@ -116,6 +128,6 @@ def get_data_with_date(date):
     output = ""
     searched_time_tracker = get_time_tracker_by_date(date)
     if searched_time_tracker != None:
-        output = {"activities": searched_time_tracker.serialize_list_to_json(searched_time_tracker.activities)}
+        output = {"activities": serialize_list_to_json(searched_time_tracker.activities)}
     
     return {"time_tracker": output}
