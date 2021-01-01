@@ -1,6 +1,7 @@
 *{
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
     text-decoration: none;
     list-style: none;
 }
@@ -48,4 +49,112 @@ body{
 
 .wrapper .time-tracker-activities{
     margin: 20px 0px;
+}
+
+
+.wrapper .category-create-form{
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.wrapper .category-create-form input[type="text"], .wrapper .category-create-form textarea{
+    margin: 10px;
+    text-align: center;
+    border: none;
+    border-radius: 8px;
+    resize: none;
+}
+
+.wrapper .category-create-form .category-name-input{
+    width: 150px;
+    height: 30px;
+}
+
+.wrapper .category-create-form .keywords-input{
+    width: 300px;
+    height: 85px;
+    padding: 20px;
+}
+
+.wrapper .category-create-form .submit-btn{
+    width: 100px;
+    height: 45px;
+    margin-top: 30px;
+    border: none;
+    border-radius: 8px;
+    background-color:#99CC33;
+    color: #2D3D0F;
+}
+
+.wrapper .category-create-form .submit-btn:hover{
+    background-color: #339900;
+    color: #ccc;
+    cursor: pointer;
+}
+
+.wrapper .category-create-form .categories-tags{
+    margin-top: 10px;
+    display: flex;
+}
+
+.wrapper .category-create-form .new-category-keyword-tag{
+    display: flex;
+    color: #ccc;
+    background-color: #202d3b;
+    height: 30px;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+.wrapper .category-create-form .new-category-keyword-tag .delete-btn{
+    height: 100%;
+    background-color: #1b2530;
+    color: #fff;
+    padding: 8px;
+    font-size: 12px;
+    border-top-left-radius: 5px;
+}
+
+.wrapper .category-create-form .new-category-keyword-tag:hover{
+    cursor: pointer;
+    background-color: #1b2530;
+}
+
+.wrapper .category-create-form .new-category-keyword-tag h5{
+    padding: 7px 14px 7px 14px;
+}
+
+.warning-alert{
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 30px;
+    text-align: center;
+    background-color: #FFCC00;
+    color: #332800;
+    border-radius: 8px;
+    opacity: 0%;
+    animation: popup 4s ease-in-out;
+}
+
+@keyframes popup{
+    0%{
+        top: 0%;
+        opacity: 0%;
+    }
+    25%{
+        top: 5%;
+        opacity: 100%;
+    }
+    75%{
+        top: 5%;
+        opacity: 100%;
+    }
+    100%{
+        top: 0%;
+        opacity: 0%;
+    }
 }

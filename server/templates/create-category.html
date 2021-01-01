@@ -3,16 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create New Category | Time Tracker</title>
+    <title>Create Category | Time Tracker</title>
     <link rel="stylesheet" href="{{ url_for('static',filename='styles/style.css') }}">
+    <script src="{{ url_for('static',filename='js/create-category.js') }}" async></script>
 </head>
 <body>
-    <h2 class="title-text">Time Tracker</h2>
-    <form action="" method="POST">
-        <h2>Create New Category</h2>
-        <input type="text" placeholder="Category Name">
-        <input type="text" placeholder="Category Keywords (ex. 'Mozilla Firefox, Google Chrome, Opera')">
-        <input type="submit" value="Create">
-    </form>
+    <div class="wrapper">
+        <h2>Create Category</h2>
+        <form action="#" method="POST" class="category-create-form">
+            <input type="text" class="category-name-input" placeholder="Category Name">
+            <textarea class="keywords-input" onkeypress="retrieveDataFromTextArea(event)" placeholder="Category Keywords &#10;(ex. Mozilla Firefox, Google Chrome)"></textarea>
+            <div id="categories-tags-rows">
+                <div class="categories-tags"></div>
+            </div>
+            <input type="submit" class="submit-btn" value="Create">
+        </form>
+    </div>
+
+    <div class="warning-alert">
+        <h4>WARNING: Keyword already exists</h4>
+    </div>
 </body>
 </html>
