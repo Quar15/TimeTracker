@@ -204,7 +204,7 @@ class TimeTrackerCategories:
         save_to_json("./data/TimeTrackerCategories.json", self.serialize())
 
     def serialize(self):
-        return ({"activities": serialize_list_to_json(self.categories)})
+        return ({"categories": serialize_list_to_json(self.categories)})
 
 class ActivityCategory:
 
