@@ -11,6 +11,10 @@ def serialize_list_to_json(list_to_serialize):
         object_list.append(obj.serialize())
     return object_list
 
+def save_to_json(path, serialized_data):
+    with open(path, "w") as f:
+        json.dump(serialized_data, f, indent=4, sort_keys=True)
+
 class TimeTracker:
 
     def __init__(self, days_to_subtract=0, date=None):
@@ -111,12 +115,8 @@ class TimeTracker:
                 return activity
         return None
 
-    def save_to_json(self, path, serialized_data):
-        with open(path, "w") as f:
-            json.dump(serialized_data, f, indent=4, sort_keys=True)
-
     def save_me(self):
-        self.save_to_json(self.file_name, {"activities": serialize_list_to_json(self.activities)})
+        save_to_json(self.file_name, {"activities": serialize_list_to_json(self.activities)})
 
 
 class TimeTrackerCategories:
@@ -199,6 +199,9 @@ class TimeTrackerCategories:
 
             self.categories[changed_category.id] = changed_category 
             print("Category ID =", changed_category.id, "updated!")
+
+    def save_me(self):
+        save_to_json("./data/TimeTrackerCategories.json", self.serialize())
 
     def serialize(self):
         return ({"activities": serialize_list_to_json(self.categories)})

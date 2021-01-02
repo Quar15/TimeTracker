@@ -82,8 +82,8 @@ def create_category_html():
         new_category_json_data = json.loads(request.data)
         new_category_name = new_category_json_data['category_name']
         new_category_keywords = new_category_json_data['keywords']
-        print(new_category_name, new_category_keywords)
         time_tracker_categories_obj.create_category(new_category_name, 0, new_category_keywords)
+        time_tracker_categories_obj.save_me()
         print("INFO: New category created")
 
     return render_template("create-category.html")
@@ -91,8 +91,6 @@ def create_category_html():
 
 @app.route('/browse-all')
 def browse_all():
-
-
     return render_template("browse-all.html", time_trackers=time_trackers)
 
 
