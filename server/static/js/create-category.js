@@ -1,8 +1,18 @@
 var categories_rows_div = document.getElementById("categories-tags-rows");
+var category_name_input = document.getElementsByClassName("category-name-input")[0];
+var send_data_btn = document.getElementById("send-data-btn");
 var categories_rows = document.getElementsByClassName("categories-tags");
 var textAreaElement = document.getElementsByClassName("keywords-input")[0];
 var tags = new Array;
 var current_row_id = 0;
+
+
+class Tag{
+    constructor(_id, _name){
+        this.id = _id;
+        this.name = _name;
+    }
+}
 
 function retrieveDataFromTextArea(event){
     if (event.keyCode == 13){
@@ -44,12 +54,18 @@ function addTag(tag_name){
     new_tag_element.onclick = function(){deleteTag(tag_id)};
     categories_rows[current_row_id].appendChild(new_tag_element);
     tag_id = new_tag_element.id;
-    return tag_id;
+    let new_tag = new Tag(tag_id, tag_name);
+    return new_tag;
 }
 
 function deleteTag(tag_id){
-    let tag_to_remove = tags.splice(tags.indexOf(tag_id), 1)[0];
-    document.getElementById(tag_to_remove).remove();
+    let new_tags = new Array();
+    for(let i=0; i<tags.length; i++){
+        if(tags[i].id != tag_id)
+            new_tags.push(tags[i]);
+    }
+    tags = new_tags;
+    document.getElementById(tag_id).remove();
     updateCategoryRows();
     rebalanceTagsRows();
 }
@@ -68,3 +84,31 @@ function rebalanceTagsRows(){
         }
     }
 }
+
+
+
+// send data to server
+
+send_data_btn.addEventListener("click", (event)=>{
+    event.preventDefault();
+    sendData();
+})
+
+var xmlhttp = new XMLHttpRequest();
+
+function serializeData(){
+    keywords_list = new Array();
+    for(let i=0; i<tags.length; i++){
+        tag_name = (tags[i].name).trim();
+        keywords_list.push(tag_name);
+    }
+    json_data = JSON.stringify({category_name: category_name_input.value, keywords: keywords_list});
+    return(json_data);
+}
+
+function sendData(){
+    xmlhttp.open("POST", "/create-category");
+    xmlhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+    xmlhttp.send(serializeData());
+}
+

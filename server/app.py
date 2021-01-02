@@ -76,13 +76,23 @@ def index():
     return render_template("index.html", graph_data=zip(graph_files, graph_dates))
 
 
-@app.route('/create-category')
+@app.route('/create-category', methods=['GET', 'POST'])
 def create_category_html():
+    if request.method == 'POST':
+        new_category_json_data = json.loads(request.data)
+        new_category_name = new_category_json_data['category_name']
+        new_category_keywords = new_category_json_data['keywords']
+        print(new_category_name, new_category_keywords)
+        time_tracker_categories_obj.create_category(new_category_name, 0, new_category_keywords)
+        print("INFO: New category created")
+
     return render_template("create-category.html")
 
 
 @app.route('/browse-all')
 def browse_all():
+
+
     return render_template("browse-all.html", time_trackers=time_trackers)
 
 

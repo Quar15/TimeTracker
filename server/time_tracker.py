@@ -151,7 +151,6 @@ class TimeTrackerCategories:
         new_category = ActivityCategory(len(self.categories), name, wage, 0, keywords)
         if self.search_category_by_name(new_category.name) == None:
             self.add_category(new_category)
-            self.update_all_activities_categories()
 
     def add_keywords_to_category(self, category_id, new_keywords):
         changed_category = self.search_category_by_id(category_id)
