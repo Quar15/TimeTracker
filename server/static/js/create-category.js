@@ -6,6 +6,7 @@ var textAreaElement = document.getElementsByClassName("keywords-input")[0];
 var tags = new Array;
 var current_row_id = 0;
 
+var ROW_LENGTH = 5;
 
 class Tag{
     constructor(_id, _name){
@@ -15,7 +16,7 @@ class Tag{
 }
 
 function retrieveDataFromTextArea(event){
-    if (event.keyCode == 13){
+    if (event.keyCode == 13 & textAreaElement.value != ""){
         data = textAreaElement.value;
         data = data.split(", ");
         textAreaElement.value = "";
@@ -41,7 +42,7 @@ function createNewCategoryRow(){
 
 function addTag(tag_name){
 
-    if(current_row_id < 0 | categories_rows[current_row_id].children.length > 4){
+    if(current_row_id < 0 | categories_rows[current_row_id].children.length > ROW_LENGTH-1){
         window.current_row_id += 1;
         createNewCategoryRow();
     }
@@ -50,7 +51,7 @@ function addTag(tag_name){
     let new_tag_element = document.createElement("div");
     new_tag_element.id = "KeywordTagID" + tag_id;
     new_tag_element.classList.add("new-category-keyword-tag");
-    new_tag_element.innerHTML = "<div class='delete-btn'>X</div><h5>" + tag_name + "</h5>";
+    new_tag_element.innerHTML = "<div class='delete-btn'>X</div><h5 class='tag-name'>" + tag_name + "</h5>";
     new_tag_element.onclick = function(){deleteTag(tag_id)};
     categories_rows[current_row_id].appendChild(new_tag_element);
     tag_id = new_tag_element.id;
@@ -73,7 +74,7 @@ function deleteTag(tag_id){
 function rebalanceTagsRows(){
     for(let i=0; i<categories_rows.length; i++){
         let children_len = categories_rows[i].children.length;
-        if(children_len < 5 & children_len > 0){
+        if(children_len < ROW_LENGTH & children_len > 0){
             if(categories_rows.length > i+1){
                 categories_rows[i].appendChild(categories_rows[i+1].children[0]);
             }
@@ -112,3 +113,4 @@ function sendData(){
     xmlhttp.send(serializeData());
 }
 
+retrieveDataFromTextArea(new KeyboardEvent('keydown', {bubbles: true, cancelable: true, keyCode: 13}));

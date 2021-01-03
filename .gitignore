@@ -1,5 +1,6 @@
 **/data
 **/__pycache__
+**/testing
 TimeTrackerData*.json
 TimeTrackerData*.png
 TimeTrackerCategories.json

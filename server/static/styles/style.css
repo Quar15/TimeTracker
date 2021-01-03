@@ -8,7 +8,7 @@
 
 @font-face {
     font-family: Montserrat;
-    src: url("./fonts/Montserrat-Regular.ttf");
+    src: url("../fonts/Montserrat-Regular.ttf");
 }
 
 body{
@@ -52,14 +52,14 @@ body{
 }
 
 
-.wrapper .category-create-form{
+.wrapper .category-create-form, .wrapper .category-update-form{
     display: flex;
     flex-flow: column;
     justify-content: center;
     align-items: center;
 }
 
-.wrapper .category-create-form input[type="text"], .wrapper .category-create-form textarea{
+.wrapper .category-create-form input[type="text"], .wrapper .category-create-form textarea, .wrapper .category-update-form input[type="text"], .wrapper .category-update-form textarea{
     margin: 10px;
     text-align: center;
     border: none;
@@ -67,18 +67,18 @@ body{
     resize: none;
 }
 
-.wrapper .category-create-form .category-name-input{
+.wrapper .category-create-form .category-name-input, .wrapper .category-update-form .category-name-input{
     width: 150px;
     height: 30px;
 }
 
-.wrapper .category-create-form .keywords-input{
+.wrapper .category-create-form .keywords-input, .wrapper .category-update-form .keywords-input{
     width: 300px;
     height: 85px;
     padding: 20px;
 }
 
-.wrapper .category-create-form .submit-btn{
+.wrapper .category-create-form .submit-btn, .wrapper .category-update-form .submit-btn{
     width: 100px;
     height: 45px;
     margin-top: 30px;
@@ -86,20 +86,21 @@ body{
     border-radius: 8px;
     background-color:#99CC33;
     color: #2D3D0F;
+    font-size: 14px;
 }
 
-.wrapper .category-create-form .submit-btn:hover{
+.wrapper .category-create-form .submit-btn:hover, .wrapper .category-update-form .submit-btn:hover{
     background-color: #339900;
     color: #ccc;
     cursor: pointer;
 }
 
-.wrapper .category-create-form .categories-tags{
+.wrapper .categories-tags{
     margin-top: 10px;
     display: flex;
 }
 
-.wrapper .category-create-form .new-category-keyword-tag{
+.wrapper .new-category-keyword-tag{
     display: flex;
     color: #ccc;
     background-color: #202d3b;
@@ -108,7 +109,7 @@ body{
     border-radius: 5px;
 }
 
-.wrapper .category-create-form .new-category-keyword-tag .delete-btn{
+.wrapper .new-category-keyword-tag .delete-btn{
     height: 100%;
     background-color: #1b2530;
     color: #fff;
@@ -117,12 +118,12 @@ body{
     border-top-left-radius: 5px;
 }
 
-.wrapper .category-create-form .new-category-keyword-tag:hover{
+.wrapper .new-category-keyword-tag:hover{
     cursor: pointer;
     background-color: #1b2530;
 }
 
-.wrapper .category-create-form .new-category-keyword-tag h5{
+.wrapper .new-category-keyword-tag h5{
     padding: 7px 14px 7px 14px;
 }
 
@@ -157,4 +158,43 @@ body{
         top: 0%;
         opacity: 0%;
     }
+}
+
+hr{
+    color: #eee;
+    margin: 20px;
+}
+
+.wrapper .category-edit-box .close-x{
+    color: #eee;
+    top: 10px;
+    right: 15px;
+    position: absolute;
+}
+
+.wrapper .category-edit-box .close-x:hover{
+    cursor: pointer;
+    color: #1b2530;
+}
+
+.wrapper .category-edit-box{
+    padding: 50px;
+    border-radius: 13px;
+    position: absolute;
+    border: 2px solid #1b2530;
+    opacity: 1;
+    animation: fadeIn 2s ease-in-out;
+}
+
+@keyframes fadeIn{
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+.wrapper .category-browse{
+    display: flex;
 }
