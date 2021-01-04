@@ -16,12 +16,16 @@ class Tag{
 }
 
 function retrieveDataFromTextArea(event){
-    if (event.keyCode == 13 & textAreaElement.value != ""){
+    let userText = textAreaElement.value;
+    userText = userText.replace(/^\s+/, '').replace(/\s+$/, '');
+    if (event.keyCode == 13 & userText != ""){
         data = textAreaElement.value;
         data = data.split(", ");
         textAreaElement.value = "";
         for(let i=0; i<data.length; i++){
-            if(data[i] != "\n" & data[i] != " "){
+            let dataText = data[i];
+            dataText = dataText.replace(/^\s+/, '').replace(/\s+$/, '');
+            if(data[i] != "\n" & data[i] != " " & dataText != ""){
                 tags.push(addTag(data[i]));
             }
         }

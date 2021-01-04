@@ -89,6 +89,17 @@ def create_category_html():
     return render_template("create-category.html")
 
 
+@app.route('/update-category/<category_id>')
+def update_category_html(category_id):
+    keywords = []
+    category_name = ""
+    searched_category = time_tracker_categories_obj.search_category_by_id(int(category_id))
+    if searched_category != None:
+        keywords = searched_category.keywords
+        category_name = searched_category.name
+
+    return render_template("edit-category.html", keywords=keywords, category_name = category_name)
+
 @app.route('/browse-all')
 def browse_all():
     return render_template("browse-all.html", time_trackers=time_trackers)

@@ -4,34 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Category | Time Tracker</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="update-category.js" async></script>
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/style.css') }}">
+    <script src="{{ url_for('static',filename='js/create-category.js') }}" async></script>
 </head>
 <body>
     <div class="wrapper">
         <div class="category-edit-box">
-            <div class="close-x">X</div>
             <h2>Update Category</h2>
             <hr>
             <form action="#" method="POST" class="category-update-form">
-                <p>Name: <input type="text" value="Test Name" class="category-name-input"></p>
+                <p>Name: <input type="text" value="{{ category_name }}" class="category-name-input"></p>
                 <p>Add keywords:</p>
-                <textarea class="keywords-input" onkeypress="retrieveDataFromTextArea(event)" placeholder="Category Keywords &#10;(ex. Mozilla Firefox, Google Chrome)"></textarea>
+                <textarea class="keywords-input" onkeypress="retrieveDataFromTextArea(event)" placeholder="Category Keywords &#10;(ex. Mozilla Firefox, Google Chrome)">
+                    {% for keyword in keywords %}
+                        {{ keyword }}, 
+                    {% endfor %}
+                </textarea>
                 <div id="categories-tags-rows">
                     <div class="categories-tags"></div>
                 </div>
                 <input type="submit" id="send-data-btn" value="Update" class="submit-btn">
             </form>
-        </div>
-        <div class="categories-browse">
-            <div class="category-box">
-                <h3>Category Name</h3>
-                <div class="tags">
-                    <div class="tag">
-
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </body>
