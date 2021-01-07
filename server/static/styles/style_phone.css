@@ -1,0 +1,17 @@
+body{
+    height: auto;
+}
+
+.wrapper{
+    position: relative;
+    margin: auto;
+    top: auto;
+    left: auto;
+    transform: translate(0%, 0%);
+    width: 90%;
+    flex-flow: column-reverse;
+}
+
+.wrapper .graphs{
+    flex-flow: column;
+}

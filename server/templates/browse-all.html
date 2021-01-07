@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Activities | Time Tracker</title>
     <link rel="stylesheet" href="{{ url_for('static',filename='styles/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/style_phone.css') }}" media="screen and (max-width: 600px)">
 </head>
 <body>
     <div class="wrapper">
-        
         {% for time_tracker in time_trackers %}
             <div class="time-tracker-activities">
                 <h2>{{ time_tracker.get_readable_date() }}</h2>
