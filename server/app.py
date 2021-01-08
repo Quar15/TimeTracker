@@ -1,7 +1,7 @@
 from time_tracker import *
 import sys
 
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__)
 
 DAYS_TO_LOAD = 7
@@ -93,6 +93,14 @@ def update_category_html(category_id):
         category_name = searched_category.name
 
     return render_template("edit-category.html", keywords=keywords, category_name = category_name)
+
+
+@app.route("/update")
+def update_data_html():
+    global time_trackers
+    time_trackers = initialize_time_trackers()
+    update_data()
+    return redirect(url_for("update_graphs_html"))
 
 
 @app.route("/update-graphs")
