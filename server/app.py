@@ -1,7 +1,7 @@
 from time_tracker import *
 import sys
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 app = Flask(__name__)
 
 DAYS_TO_LOAD = 7
@@ -50,12 +50,8 @@ def get_time_tracker_by_date(searched_date):
 
 
 def create_graphs_for_time_trackers():
-    for time_tracker in time_trackers:
-        time_tracker.create_graph()
-
-
-def create_legend():
-    time_trackers[0].create_graph(create_legend_png=True)
+    command = "py ./creategraphs.py " + str(DAYS_TO_LOAD)
+    os.system(command)
 
 
 time_tracker_categories_obj = initialize_categories()
@@ -63,8 +59,6 @@ time_trackers = initialize_time_trackers()
 update_data()
 if len(time_trackers):
     create_graphs_for_time_trackers()
-    create_legend()
-    pass
 
 @app.route('/')
 def index():
@@ -99,6 +93,13 @@ def update_category_html(category_id):
         category_name = searched_category.name
 
     return render_template("edit-category.html", keywords=keywords, category_name = category_name)
+
+
+@app.route("/update-graphs")
+def update_graphs_html():
+    create_graphs_for_time_trackers()
+    return redirect("/")
+
 
 @app.route('/browse-all')
 def browse_all():
