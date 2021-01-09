@@ -15,6 +15,10 @@ def save_to_json(path, serialized_data):
     with open(path, "w") as f:
         json.dump(serialized_data, f, indent=4, sort_keys=True)
 
+def get_readable_time(seconds):
+    readable_time = str(timedelta(seconds=seconds))
+    return(readable_time)
+
 class TimeTracker:
 
     def __init__(self, days_to_subtract=0, date=None):
@@ -52,6 +56,23 @@ class TimeTracker:
     def get_readable_date(self):
         return (self.date[0:2]+"."+self.date[2:4]+"."+self.date[4:])
 
+    def get_categories_and_time(self, serialize_time=False):
+        temp_categories = TimeTrackerCategories()
+        temp_categories.initialize_me()
+        temp_categories.update_all_categories_time_spend(self.activities)
+        categories = temp_categories.categories
+
+        category_times = []
+        category_names = []
+        for category in categories:
+            category_names.append(category.name)
+            total_time_spend = category.total_time_spend
+            if(serialize_time):
+                total_time_spend = get_readable_time(total_time_spend)
+            category_times.append(total_time_spend)
+
+        return category_times, category_names
+
     def add_activity(self, new_activity):
         self.activities.append(new_activity)
 
@@ -59,16 +80,7 @@ class TimeTracker:
         graph_file_name = "./static/png/TimeTrackerData" + self.date + ".png"
         fig, ax = plt.subplots(figsize=(6, 3), subplot_kw=dict(aspect="equal"))
 
-        temp_categories = TimeTrackerCategories()
-        temp_categories.initialize_me()
-        temp_categories.update_all_categories_time_spend(self.activities)
-        categories = temp_categories.categories
-
-        category_time = []
-        category_names = []
-        for category in categories:
-            category_names.append(category.name)
-            category_time.append(category.total_time_spend)
+        category_time, category_names = self.get_categories_and_time()
 
         def get_labels(allvals):
             labels = []

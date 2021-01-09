@@ -11,10 +11,15 @@
     <h2 class="title-text">Time Tracker</h2>
     <div class="wrapper">
         <div class="graphs">
-            {% for graph_file, graph_date in graph_data %}
+            {% for i in range(arr_length) %}
             <div class="graph-box">
-                <h2>{{ graph_date }}</h2>
-                <img src="{{ url_for('static',filename=graph_file) }}"  class="time-percentage-img">
+                <h2>{{ graph_dates[i] }}</h2>
+                <img src="{{ url_for('static',filename=graph_files[i]) }}"  class="time-percentage-img">
+                <div class="time-data-text">
+                    {% for total_time_spend, name in  time_trackers_categories[i] %}
+                        <h3>{{ total_time_spend }} - {{ name }}</h3>
+                    {% endfor %}
+                </div>
             </div>
             {% endfor %}
         </div>

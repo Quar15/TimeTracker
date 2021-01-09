@@ -64,10 +64,15 @@ if len(time_trackers):
 def index():
     graph_files = []
     graph_dates = []
+    time_trackers_categories = []
     for time_tracker in time_trackers:
         graph_dates.append(time_tracker.get_readable_date())
         graph_files.append("/png/TimeTrackerData" + time_tracker.date + ".png")
-    return render_template("index.html", graph_data=zip(graph_files, graph_dates))
+        category_names, category_times = time_tracker.get_categories_and_time(serialize_time=True)
+        time_trackers_categories.append(zip(category_names, category_times))
+
+    
+    return render_template("index.html", graph_files=graph_files, graph_dates=graph_dates, time_trackers_categories=time_trackers_categories, arr_length=len(graph_files))
 
 
 @app.route('/create-category', methods=['GET', 'POST'])
