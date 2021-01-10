@@ -26,13 +26,15 @@ Optionally use
 ```
 flask run --host=0.0.0.0
 ```
- for flask server to be visible in the local network
+for flask server to be visible in the local network
 
- Server allows to create new categories and adding keywords for them to automatically add window names to them.
+Server allows to create new categories and adding keywords for them to automatically add window names to them.
  
- # WORK IN PROGRESS
- Server will update automatically graphs (index.html) and refresh data (time spend on category) every day.
- Sites will be responsive (now on phones sites can break)
- Site to add keywords from activities saved. Some apps/sites have very good window naming policies, but not all of them.
- For example YouTube will always have YouTube in their window name so you need "YouTube" as the keyword and TimeTracker will always detect it, but for example Metro Exodus sometimes have "4A Engine" as window name (which is checked by TimeTracker) and keyword "Metro Exodus" will not work. 
+# Attribution
+* icon - Stopwatch by Dmitry Mirolyubov from the Noun Project
+
+# WORK IN PROGRESS
+* Server will update automatically graphs (index.html) and refresh data (time spend on category) every day.
+* Sites will be responsive (now on phones sites can break)
+* Site to add keywords from activities saved. Some apps/sites have very good window naming policies, but not all of them. For example YouTube will always have YouTube in their window name so you need "YouTube" as the keyword and TimeTracker will always detect it, but for example Metro Exodus sometimes have "4A Engine" as window name (which is checked by TimeTracker) and keyword "Metro Exodus" will not work. 
 
