@@ -198,3 +198,24 @@ hr{
 .wrapper .category-browse{
     display: flex;
 }
+
+.wrapper .time-data-text{
+    text-align: left;
+}
+
+.update-button{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #99CC33;
+    padding: 15px;
+    border: 1px solid black;
+    border-radius: 13px;
+    color: #000;
+}
+
+.update-button:hover{
+    cursor: pointer;
+    background-color: #339900;
+    color: #222;
+}
