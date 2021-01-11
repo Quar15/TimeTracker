@@ -8,7 +8,8 @@
             ],
             "name": "Web",
             "total_time_spend": 0,
-            "wage": 0
+            "wage": 0,
+            "overcategory": -1
         },
         {
             "id": 1,
@@ -33,7 +34,8 @@
             ],
             "name": "Coding",
             "total_time_spend": 0,
-            "wage": 2
+            "wage": 2,
+            "overcategory": -1
         },
         {
             "id": 2,
@@ -45,7 +47,8 @@
             ],
             "name": "Entertainment",
             "total_time_spend": 0,
-            "wage": -1
+            "wage": -1,
+            "overcategory": -1
         },
         {
             "id": 3,
@@ -56,7 +59,8 @@
             ],
             "name": "Searching",
             "total_time_spend": 0,
-            "wage": 0
+            "wage": 0,
+            "overcategory": 1
         },
         {
             "id": 4,
@@ -68,7 +72,8 @@
             ],
             "name": "Communication",
             "total_time_spend": 0,
-            "wage": 0
+            "wage": 0,
+            "overcategory": -1
         }
     ]
 }

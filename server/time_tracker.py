@@ -137,14 +137,31 @@ class TimeTrackerCategories:
         self.categories = []
 
     def initialize_me(self):
+        # read data from json
         with open("./data/TimeTrackerCategories.json", "r") as f:
             data = json.load(f)
+
+        # initialize categories (serialize data from json)
         self.categories = self.get_categories_from_json(data)
 
     def get_categories_from_json(self, data):
         category_list = []
+        subcategories = []
+
+        # read data from json and create categories
         for category in data['categories']:
-            category_list.append(ActivityCategory(category['id'], category['name'], category['wage'], category['total_time_spend'], category['keywords']))
+            new_category = (ActivityCategory(category['id'], category['name'], category['wage'], category['total_time_spend'], category['overcategory'], category['keywords']))
+            if new_category.overcategory == -1:
+                category_list.append(new_category)
+            elif new_category.overcategory >= 0:
+                subcategories.append(new_category)
+
+        # handle subcategories 
+        for category in category_list:
+            for subcategory in subcategories:
+                if subcategory.overcategory == category.id:
+                    category.add_subcategory(subcategory)
+
         return category_list
 
     def search_category_by_id(self, searched_category_id):
@@ -220,12 +237,14 @@ class TimeTrackerCategories:
 
 class ActivityCategory:
 
-    def __init__(self, _id, _name, _wage, _total_time_spend=0, _keywords = []):
+    def __init__(self, _id, _name, _wage, _total_time_spend=0, _overcategory = -1, _keywords = []):
         self.id = _id
         self.name = _name
         self.wage = _wage
         self.total_time_spend = _total_time_spend
         self.keywords = _keywords
+        self.overcategory = _overcategory
+        self.subcategories = []
 
     def serialize(self):
         return {
@@ -233,6 +252,7 @@ class ActivityCategory:
             "name": self.name,
             "wage": self.wage,
             "total_time_spend": self.total_time_spend,
+            "overcategory": self.overcategory,
             "keywords": self.keywords
         }
 
@@ -242,6 +262,14 @@ class ActivityCategory:
             if new_keyword not in self.keywords:
                 self.keywords.append(new_keyword)
                 print("New keyword added to", self.name)
+
+    def add_subcategory(self, new_subcategory):
+        for subcategory in self.subcategories:
+            if subcategory == new_subcategory:
+                return False
+        self.subcategories.append(new_subcategory)
+        return True
+
 
 class Activity:
     
