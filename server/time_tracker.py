@@ -157,10 +157,8 @@ class TimeTrackerCategories:
                 subcategories.append(new_category)
 
         # handle subcategories 
-        for category in category_list:
-            for subcategory in subcategories:
-                if subcategory.overcategory == category.id:
-                    category.add_subcategory(subcategory)
+        for subcategory in subcategories:
+            category_list[subcategory.overcategory].add_subcategory(subcategory)
 
         return category_list
 
