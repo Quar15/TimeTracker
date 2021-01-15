@@ -127,7 +127,7 @@ def add_new_data():
         new_time_tracker.activities = new_time_tracker.get_activities_from_json(new_time_tracker_data)
         time_trackers.append(new_time_tracker)
         update_data()
-        return ""
+        return redirect("/update")
     except:
         print("ERROR: File error")
         return "Error with files"
